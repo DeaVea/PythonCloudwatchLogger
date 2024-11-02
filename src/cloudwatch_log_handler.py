@@ -40,7 +40,6 @@ class CloudWatchLogHandler(logging.StreamHandler):
         try:
             self.client.create_log_stream(logGroupName=self.log_group_name, logStreamName=self.log_stream_name)
         except ClientError as e:
-            print(e)
             if e.response['Error']['Code'] == 'ResourceAlreadyExistsException':
                 # The log stream already exists so simply return it now.
                 pass
@@ -56,8 +55,6 @@ class CloudWatchLogHandler(logging.StreamHandler):
 
     def emit(self, record):
         try:
-            print("Emitted log to CloudWatch Logs")
-            print(self.format(record))
             response = self.client.put_log_events(
                 logGroupName=self.log_group_name,
                 logStreamName=self.log_stream_name,
@@ -69,7 +66,6 @@ class CloudWatchLogHandler(logging.StreamHandler):
                 ],
                 sequenceToken="These are ignored nowe"
             )
-            print(response)
         except ClientError as e:
             # Check if the log stream exists and then create it if not. Then try to send the log again.
             if e.response['Error']['Code'] == 'ResourceNotFoundException':
