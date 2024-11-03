@@ -1,7 +1,7 @@
 from src.base_cloudwatch_log_handler import BaseCloudWatchLogHandler
 
 ## This class is a special log handler that will send logs to CloudWatch Logs that you specify in the constructor.
-## It will also send logs to the console, so you can see them in the AWS Lambda console.
+## This implementation will send the logs as they come in. 
 ## Example usage:
 ## logger = logging.getLogger()
 ## logger.setLevel(logging.INFO)    

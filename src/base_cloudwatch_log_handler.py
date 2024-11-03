@@ -5,13 +5,7 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 
-## This class is a special log handler that will send logs to CloudWatch Logs that you specify in the constructor.
-## It will also send logs to the console, so you can see them in the AWS Lambda console.
-## Example usage:
-## logger = logging.getLogger()
-## logger.setLevel(logging.INFO)    
-## logger.addHandler(CloudWatchLogHandler('log-group-name', 'log-stream-name'))
-## logger.info('Hello, CloudWatch Logs!')
+## Base class for CloudWatch Log Handlers. This class should not be used directly.
 class BaseCloudWatchLogHandler(logging.StreamHandler):
     def __init__(self, log_group_name, log_stream_name, logsClient):
         super().__init__()
@@ -53,6 +47,7 @@ class BaseCloudWatchLogHandler(logging.StreamHandler):
                 raise e
         return self.client.describe_log_streams(logGroupName=self.log_group_name, logStreamNamePrefix=self.log_stream_name)['logStreams'][0]
 
+    ## This will send the log events to CloudWatch Logs.
     def sendLogEvents(self, logEvents):
         try:
             self.client.put_log_events(
